@@ -1,0 +1,821 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ㅋㅋㅍㅍ | 하루복기 시스템</title>
+    <meta
+      name="description"
+      content="20년차 HRDer가 만든 ㅋㅋㅍㅍ 하루복기 시스템. 시간, 습관, 돈, 일의 데이터를 기록하고 삶과 비즈니스의 인사이트로 바꿉니다."
+    />
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              ink: "#111827",
+              muted: "#4B5563",
+              soft: "#F9FAFB",
+              line: "#E5E7EB",
+              point: "#2563EB",
+              pointDark: "#1D4ED8",
+            },
+            boxShadow: {
+              soft: "0 18px 50px rgba(17, 24, 39, 0.08)",
+            },
+          },
+        },
+      };
+    </script>
+
+    <style>
+      html {
+        scroll-behavior: smooth;
+      }
+
+      body {
+        font-family: -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo",
+          "Noto Sans KR", "Segoe UI", sans-serif;
+      }
+    </style>
+  </head>
+
+  <body class="bg-white text-ink">
+    <div id="root"></div>
+
+    <script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+
+    <script type="text/babel">
+      const navItems = [
+        { label: "브랜드", href: "#brand" },
+        { label: "하루복기 시스템", href: "#product" },
+        { label: "콘텐츠", href: "#content" },
+        { label: "문의", href: "#contact" },
+      ];
+
+      const problemCards = [
+        "시간이 사라집니다",
+        "습관이 반복됩니다",
+        "돈의 흐름이 흐릿합니다",
+        "일의 결과가 쌓이지 않습니다",
+      ];
+
+      const productComponents = [
+        "노션 하루복기 템플릿",
+        "하루 점수 평가표",
+        "GPT 분석 프롬프트",
+        "내일 실행계획 변환 프롬프트",
+        "옵시디언 저장용 md 프롬프트",
+        "사용 설명 PDF",
+        "예시 기록 3개",
+      ];
+
+      const steps = [
+        "하루 기록하기",
+        "점수화하기",
+        "GPT로 분석하기",
+        "인사이트 뽑기",
+        "내일 계획으로 바꾸기",
+        "옵시디언에 저장하기",
+      ];
+
+      const targets = [
+        "계획은 세우지만 자주 무너지는 분",
+        "하루를 어떻게 썼는지 매번 흐릿한 분",
+        "습관과 루틴을 만들고 싶은 분",
+        "돈과 시간을 함께 관리하고 싶은 분",
+        "GPT를 자기관리 도구로 쓰고 싶은 분",
+        "노션을 실행 관리 도구로 쓰고 싶은 분",
+        "옵시디언에 인사이트를 쌓고 싶은 분",
+        "매일의 실패를 다음 성장의 데이터로 바꾸고 싶은 분",
+      ];
+
+      const beforeItems = [
+        "하루가 어떻게 지나갔는지 흐릿합니다.",
+        "계획은 자주 무너지고, 이유는 잘 모릅니다.",
+        "실패는 반복되지만 기록으로 남지 않습니다.",
+        "돈, 시간, 일의 흐름이 따로 움직입니다.",
+        "GPT를 써도 일회성 답변으로 끝납니다.",
+      ];
+
+      const afterItems = [
+        "하루의 행동이 데이터로 남습니다.",
+        "반복되는 실패 패턴이 보입니다.",
+        "오늘의 기록이 내일의 계획으로 바뀝니다.",
+        "시간, 습관, 돈, 일이 하나의 흐름으로 연결됩니다.",
+        "GPT가 나만의 하루 분석가처럼 작동합니다.",
+      ];
+
+      const contentCategories = ["시간", "습관", "돈", "일", "기록 도구"];
+
+      const faqItems = [
+        {
+          q: "노션을 잘 몰라도 사용할 수 있나요?",
+          a: "네. 복잡한 기능보다 매일 기록하고 분석하는 흐름에 집중한 템플릿입니다.",
+        },
+        {
+          q: "GPT 유료 버전이 꼭 필요한가요?",
+          a: "필수는 아닙니다. 다만 긴 기록을 분석하거나 더 깊은 피드백을 받으려면 유료 버전이 더 편할 수 있습니다.",
+        },
+        {
+          q: "이걸 쓰면 정말 습관이 바뀌나요?",
+          a: "템플릿 자체가 습관을 대신 만들어주지는 않습니다. 다만 반복되는 실패 원인을 보이게 만들고, 내일의 실행계획으로 바꾸는 구조를 제공합니다.",
+        },
+        {
+          q: "주식 복기에도 사용할 수 있나요?",
+          a: "기본 상품은 하루복기 중심입니다. 다만 돈과 실행 데이터를 함께 기록하기 때문에 투자 복기의 기초 기록으로도 활용할 수 있습니다.",
+        },
+        {
+          q: "구매 후 업데이트가 있나요?",
+          a: "초기 구매자에게는 개선 버전 안내를 제공할 수 있습니다.",
+        },
+      ];
+
+      const contactTypes = [
+        "상품 문의",
+        "강의 문의",
+        "워크숍 문의",
+        "협업 문의",
+        "콘텐츠 제휴 문의",
+        "기타 문의",
+      ];
+
+      function PrimaryButton({ children, href = "#" }) {
+        return (
+          <a
+            href={href}
+            className="inline-flex items-center justify-center rounded-full bg-point px-6 py-3 text-sm font-semibold text-white shadow-sm transition hover:bg-pointDark focus:outline-none focus:ring-4 focus:ring-blue-100"
+          >
+            {children}
+          </a>
+        );
+      }
+
+      function SecondaryButton({ children, href = "#" }) {
+        return (
+          <a
+            href={href}
+            className="inline-flex items-center justify-center rounded-full border border-line bg-white px-6 py-3 text-sm font-semibold text-ink transition hover:border-gray-300 hover:bg-soft focus:outline-none focus:ring-4 focus:ring-gray-100"
+          >
+            {children}
+          </a>
+        );
+      }
+
+      function SectionLabel({ children }) {
+        return (
+          <p className="mb-3 text-sm font-bold tracking-[0.18em] text-point">
+            {children}
+          </p>
+        );
+      }
+
+      function SectionTitle({ eyebrow, title, description, align = "left" }) {
+        return (
+          <div className={align === "center" ? "mx-auto max-w-3xl text-center" : "max-w-3xl"}>
+            {eyebrow && <SectionLabel>{eyebrow}</SectionLabel>}
+            <h2 className="text-3xl font-bold tracking-tight text-ink md:text-4xl">
+              {title}
+            </h2>
+            {description && (
+              <p className="mt-5 whitespace-pre-line text-base leading-8 text-muted md:text-lg">
+                {description}
+              </p>
+            )}
+          </div>
+        );
+      }
+
+      function Card({ children, className = "" }) {
+        return (
+          <div
+            className={`rounded-3xl border border-line bg-white p-6 shadow-sm transition hover:shadow-soft ${className}`}
+          >
+            {children}
+          </div>
+        );
+      }
+
+      function Header() {
+        return (
+          <header className="sticky top-0 z-50 border-b border-line bg-white/90 backdrop-blur">
+            <div className="mx-auto flex max-w-7xl items-center justify-between px-5 py-4 md:px-8">
+              <a href="#top" className="text-xl font-black tracking-tight">
+                ㅋㅋㅍㅍ
+              </a>
+
+              <nav className="hidden items-center gap-8 md:flex">
+                {navItems.map((item) => (
+                  <a
+                    key={item.label}
+                    href={item.href}
+                    className="text-sm font-medium text-muted transition hover:text-ink"
+                  >
+                    {item.label}
+                  </a>
+                ))}
+              </nav>
+
+              <a
+                href="#"
+                className="hidden rounded-full bg-ink px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-gray-800 md:inline-flex"
+              >
+                구매하기
+              </a>
+
+              <a
+                href="#"
+                className="rounded-full bg-ink px-4 py-2 text-xs font-semibold text-white transition hover:bg-gray-800 md:hidden"
+              >
+                구매하기
+              </a>
+            </div>
+
+            <nav className="mx-auto flex max-w-7xl gap-5 overflow-x-auto px-5 pb-4 text-sm font-medium text-muted md:hidden">
+              {navItems.map((item) => (
+                <a
+                  key={item.label}
+                  href={item.href}
+                  className="shrink-0 transition hover:text-ink"
+                >
+                  {item.label}
+                </a>
+              ))}
+            </nav>
+          </header>
+        );
+      }
+
+      function Hero() {
+        return (
+          <section id="top" className="border-b border-line bg-white">
+            <div className="mx-auto grid max-w-7xl gap-12 px-5 py-20 md:grid-cols-[1.08fr_0.92fr] md:px-8 md:py-28">
+              <div className="flex flex-col justify-center">
+                <p className="mb-5 inline-flex w-fit rounded-full border border-line bg-soft px-4 py-2 text-sm font-semibold text-muted">
+                  20년차 HRDer가 만든
+                </p>
+
+                <h1 className="text-5xl font-black tracking-tight text-ink md:text-7xl">
+                  ㅋㅋㅍㅍ
+                </h1>
+
+                <p className="mt-6 text-2xl font-bold tracking-tight text-ink md:text-3xl">
+                  데이터 심은 데 인사이트 난다.
+                </p>
+
+                <p className="mt-7 whitespace-pre-line text-lg leading-9 text-muted md:text-xl">
+                  시간, 습관, 돈, 일의 데이터를 기록하고
+                  {"\n"}삶과 비즈니스의 인사이트로 바꿉니다.
+                </p>
+
+                <div className="mt-10 flex flex-col gap-3 sm:flex-row">
+                  <PrimaryButton>하루복기 시스템 보기</PrimaryButton>
+                  <SecondaryButton>콘텐츠 둘러보기</SecondaryButton>
+                </div>
+              </div>
+
+              <div className="relative">
+                <div className="absolute -right-6 -top-6 hidden h-40 w-40 rounded-full bg-blue-50 md:block"></div>
+                <div className="absolute -bottom-6 -left-6 hidden h-32 w-32 rounded-full bg-gray-100 md:block"></div>
+
+                <div className="relative rounded-[2rem] border border-line bg-soft p-5 shadow-soft">
+                  <div className="rounded-[1.5rem] bg-white p-6">
+                    <p className="text-sm font-bold text-point">
+                      ㅋㅋㅍㅍ 하루복기 시스템
+                    </p>
+
+                    <h3 className="mt-4 text-2xl font-bold leading-tight">
+                      오늘의 기록을
+                      <br />
+                      내일의 실행계획으로
+                    </h3>
+
+                    <div className="mt-8 grid grid-cols-2 gap-3">
+                      {["시간", "습관", "돈", "일"].map((item) => (
+                        <div
+                          key={item}
+                          className="rounded-2xl border border-line bg-white p-4"
+                        >
+                          <p className="text-sm font-bold text-ink">{item}</p>
+                          <p className="mt-2 text-xs leading-5 text-muted">
+                            하루 데이터를 기록하고 흐름을 확인합니다.
+                          </p>
+                        </div>
+                      ))}
+                    </div>
+
+                    <div className="mt-6 rounded-2xl bg-ink p-5 text-white">
+                      <p className="text-sm font-semibold text-gray-300">
+                        핵심 흐름
+                      </p>
+                      <p className="mt-2 text-lg font-bold">
+                        기록 → 데이터 → 인사이트 → 실행
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+        );
+      }
+
+      function Problem() {
+        return (
+          <section id="brand" className="bg-soft py-20 md:py-28">
+            <div className="mx-auto max-w-7xl px-5 md:px-8">
+              <SectionTitle
+                eyebrow="PROBLEM"
+                title="계획은 세우는데, 왜 자꾸 무너질까요?"
+                description={`하루를 열심히 보낸 것 같은데,
+막상 돌아보면 무엇을 했는지 선명하지 않을 때가 있습니다.
+
+분명히 계획은 세웠는데,
+시간은 사라지고, 돈은 새고, 중요한 일은 밀려 있습니다.
+
+문제는 의지가 부족해서만은 아닙니다.
+내 하루가 어떤 데이터로 쌓이고 있는지 보이지 않기 때문입니다.`}
+              />
+
+              <div className="mt-12 grid gap-4 md:grid-cols-4">
+                {problemCards.map((item, index) => (
+                  <Card key={item}>
+                    <div className="mb-5 flex h-10 w-10 items-center justify-center rounded-full bg-blue-50 text-sm font-black text-point">
+                      {index + 1}
+                    </div>
+                    <h3 className="text-lg font-bold">{item}</h3>
+                  </Card>
+                ))}
+              </div>
+            </div>
+          </section>
+        );
+      }
+
+      function Philosophy() {
+        const flow = ["기록", "데이터", "패턴", "인사이트", "계획", "실행", "결과"];
+
+        return (
+          <section className="bg-white py-20 md:py-28">
+            <div className="mx-auto max-w-7xl px-5 md:px-8">
+              <SectionTitle
+                eyebrow="PHILOSOPHY"
+                title="기록은 데이터가 되고, 데이터는 인사이트가 됩니다."
+                description={`ㅋㅋㅍㅍ는 하루를 그냥 감정으로만 돌아보지 않습니다.
+시간을 어떻게 썼는지,
+어떤 습관이 반복됐는지,
+돈과 일의 흐름이 어떻게 이어졌는지 기록합니다.
+
+기록은 데이터가 됩니다.
+데이터는 반복되는 패턴을 보여줍니다.
+패턴은 인사이트가 됩니다.
+인사이트는 내일의 계획으로 바뀝니다.
+계획은 실행이 되고, 실행은 다시 결과 데이터로 남습니다.`}
+              />
+
+              <div className="mt-12 rounded-3xl border border-line bg-soft p-6 md:p-8">
+                <p className="mb-5 text-sm font-bold text-muted">핵심 흐름</p>
+                <div className="flex flex-wrap items-center gap-3">
+                  {flow.map((item, index) => (
+                    <React.Fragment key={item}>
+                      <span className="rounded-full bg-white px-5 py-3 text-sm font-bold text-ink shadow-sm">
+                        {item}
+                      </span>
+                      {index !== flow.length - 1 && (
+                        <span className="text-muted">→</span>
+                      )}
+                    </React.Fragment>
+                  ))}
+                </div>
+              </div>
+            </div>
+          </section>
+        );
+      }
+
+      function Product() {
+        return (
+          <section id="product" className="bg-soft py-20 md:py-28">
+            <div className="mx-auto max-w-7xl px-5 md:px-8">
+              <div className="grid gap-8 md:grid-cols-[0.9fr_1.1fr] md:items-center">
+                <SectionTitle
+                  eyebrow="PRODUCT"
+                  title={`대표상품\nㅋㅋㅍㅍ 하루복기 시스템`}
+                  description={`하루의 시간, 습관, 돈, 일 데이터를 기록하고
+반복되는 실패 패턴과 내일의 실행계획을 찾아주는 개인 기록 시스템입니다.`}
+                />
+
+                <Card className="bg-white p-8 md:p-10">
+                  <p className="text-sm font-bold text-point">대표상품</p>
+                  <h3 className="mt-3 text-3xl font-black tracking-tight">
+                    ㅋㅋㅍㅍ 하루복기 시스템
+                  </h3>
+                  <p className="mt-5 leading-8 text-muted">
+                    하루를 기록하고, 점수화하고, GPT로 분석한 뒤 내일의
+                    실행계획으로 전환하는 개인 기록 시스템입니다.
+                  </p>
+
+                  <div className="mt-8 flex flex-col gap-3 sm:flex-row">
+                    <PrimaryButton>하루복기 시스템 구매하기</PrimaryButton>
+                    <SecondaryButton>구성품 자세히 보기</SecondaryButton>
+                  </div>
+                </Card>
+              </div>
+            </div>
+          </section>
+        );
+      }
+
+      function ProductComponents() {
+        return (
+          <section className="bg-white py-20 md:py-28">
+            <div className="mx-auto max-w-7xl px-5 md:px-8">
+              <SectionTitle
+                eyebrow="COMPONENTS"
+                title="무엇이 포함되어 있나요?"
+                align="center"
+              />
+
+              <div className="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+                {productComponents.map((item, index) => (
+                  <Card key={item}>
+                    <p className="text-sm font-black text-point">
+                      {String(index + 1).padStart(2, "0")}
+                    </p>
+                    <h3 className="mt-4 text-lg font-bold">{item}</h3>
+                  </Card>
+                ))}
+              </div>
+            </div>
+          </section>
+        );
+      }
+
+      function HowItWorks() {
+        return (
+          <section className="bg-soft py-20 md:py-28">
+            <div className="mx-auto max-w-7xl px-5 md:px-8">
+              <SectionTitle
+                eyebrow="HOW IT WORKS"
+                title="하루복기 시스템은 이렇게 작동합니다."
+                align="center"
+              />
+
+              <div className="mt-12 grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+                {steps.map((step, index) => (
+                  <Card key={step}>
+                    <div className="mb-5 flex h-12 w-12 items-center justify-center rounded-2xl bg-ink text-sm font-black text-white">
+                      {index + 1}
+                    </div>
+                    <h3 className="text-xl font-bold">
+                      {index + 1}단계. {step}
+                    </h3>
+                  </Card>
+                ))}
+              </div>
+            </div>
+          </section>
+        );
+      }
+
+      function Target() {
+        return (
+          <section className="bg-white py-20 md:py-28">
+            <div className="mx-auto max-w-7xl px-5 md:px-8">
+              <SectionTitle
+                eyebrow="TARGET"
+                title="이런 분께 추천합니다."
+                align="center"
+              />
+
+              <div className="mt-12 grid gap-4 md:grid-cols-2">
+                {targets.map((item) => (
+                  <div
+                    key={item}
+                    className="flex items-start gap-4 rounded-2xl border border-line bg-white p-5 shadow-sm"
+                  >
+                    <span className="mt-1 h-2.5 w-2.5 shrink-0 rounded-full bg-point"></span>
+                    <p className="font-semibold leading-7 text-ink">{item}</p>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </section>
+        );
+      }
+
+      function BeforeAfter() {
+        return (
+          <section className="bg-soft py-20 md:py-28">
+            <div className="mx-auto max-w-7xl px-5 md:px-8">
+              <SectionTitle
+                eyebrow="CHANGE"
+                title="하루가 이렇게 달라집니다."
+                align="center"
+              />
+
+              <div className="mt-12 grid gap-6 md:grid-cols-2">
+                <Card className="p-8">
+                  <p className="mb-6 text-sm font-black tracking-[0.18em] text-muted">
+                    BEFORE
+                  </p>
+                  <ul className="space-y-4">
+                    {beforeItems.map((item) => (
+                      <li key={item} className="flex gap-3 leading-7 text-muted">
+                        <span className="mt-3 h-1.5 w-1.5 shrink-0 rounded-full bg-gray-400"></span>
+                        <span>{item}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </Card>
+
+                <Card className="border-blue-100 bg-blue-50/40 p-8">
+                  <p className="mb-6 text-sm font-black tracking-[0.18em] text-point">
+                    AFTER
+                  </p>
+                  <ul className="space-y-4">
+                    {afterItems.map((item) => (
+                      <li key={item} className="flex gap-3 leading-7 text-ink">
+                        <span className="mt-3 h-1.5 w-1.5 shrink-0 rounded-full bg-point"></span>
+                        <span>{item}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </Card>
+              </div>
+            </div>
+          </section>
+        );
+      }
+
+      function Price() {
+        return (
+          <section id="price" className="bg-white py-20 md:py-28">
+            <div className="mx-auto max-w-7xl px-5 md:px-8">
+              <SectionTitle eyebrow="PRICE" title="런칭 구성" align="center" />
+
+              <div className="mx-auto mt-12 max-w-3xl rounded-[2rem] border border-line bg-white p-6 shadow-soft md:p-10">
+                <div className="flex flex-col gap-6 border-b border-line pb-8 md:flex-row md:items-end md:justify-between">
+                  <div>
+                    <p className="text-sm font-bold text-point">상품명</p>
+                    <h3 className="mt-3 text-3xl font-black tracking-tight">
+                      ㅋㅋㅍㅍ 하루복기 시스템
+                    </h3>
+                  </div>
+
+                  <div className="text-left md:text-right">
+                    <p className="text-sm text-muted">
+                      정가{" "}
+                      <span className="line-through">39,000원</span>
+                    </p>
+                    <p className="mt-2 text-4xl font-black text-ink">
+                      19,000원
+                    </p>
+                    <p className="mt-1 text-sm font-semibold text-point">
+                      런칭가
+                    </p>
+                  </div>
+                </div>
+
+                <div className="mt-8">
+                  <p className="mb-5 text-sm font-bold text-muted">포함 구성</p>
+                  <div className="grid gap-3 sm:grid-cols-2">
+                    {productComponents.map((item) => (
+                      <div
+                        key={item}
+                        className="rounded-2xl border border-line bg-soft px-4 py-3 text-sm font-semibold"
+                      >
+                        {item}
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
+                <div className="mt-9 flex flex-col gap-3 sm:flex-row">
+                  <PrimaryButton>런칭가로 구매하기</PrimaryButton>
+                  <SecondaryButton>문의하기</SecondaryButton>
+                </div>
+
+                <p className="mt-6 text-sm leading-6 text-muted">
+                  구매 후 템플릿 링크와 사용 안내 자료를 전달드립니다.
+                </p>
+              </div>
+            </div>
+          </section>
+        );
+      }
+
+      function Content() {
+        return (
+          <section id="content" className="bg-soft py-20 md:py-28">
+            <div className="mx-auto max-w-7xl px-5 md:px-8">
+              <SectionTitle
+                eyebrow="CONTENT"
+                title="ㅋㅋㅍㅍ에서 다루는 콘텐츠"
+                align="center"
+              />
+
+              <div className="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-5">
+                {contentCategories.map((item) => (
+                  <Card key={item} className="text-center">
+                    <h3 className="text-xl font-black">{item}</h3>
+                    <p className="mt-3 text-sm leading-6 text-muted">
+                      기록을 인사이트로 바꾸는 콘텐츠를 다룹니다.
+                    </p>
+                  </Card>
+                ))}
+              </div>
+
+              <div className="mt-10 flex flex-col justify-center gap-3 sm:flex-row">
+                <PrimaryButton>블로그 보러가기</PrimaryButton>
+                <SecondaryButton>유튜브 보러가기</SecondaryButton>
+              </div>
+            </div>
+          </section>
+        );
+      }
+
+      function FAQ() {
+        return (
+          <section className="bg-white py-20 md:py-28">
+            <div className="mx-auto max-w-4xl px-5 md:px-8">
+              <SectionTitle
+                eyebrow="FAQ"
+                title="자주 묻는 질문"
+                align="center"
+              />
+
+              <div className="mt-12 space-y-4">
+                {faqItems.map((item, index) => (
+                  <details
+                    key={item.q}
+                    className="group rounded-2xl border border-line bg-white p-6 shadow-sm"
+                    open={index === 0}
+                  >
+                    <summary className="flex cursor-pointer list-none items-center justify-between gap-4">
+                      <h3 className="text-base font-bold md:text-lg">
+                        Q. {item.q}
+                      </h3>
+                      <span className="shrink-0 rounded-full bg-soft px-3 py-1 text-sm font-bold text-muted group-open:hidden">
+                        +
+                      </span>
+                      <span className="hidden shrink-0 rounded-full bg-soft px-3 py-1 text-sm font-bold text-muted group-open:inline">
+                        -
+                      </span>
+                    </summary>
+                    <p className="mt-4 leading-8 text-muted">A. {item.a}</p>
+                  </details>
+                ))}
+              </div>
+            </div>
+          </section>
+        );
+      }
+
+      function FinalCTA() {
+        return (
+          <section className="bg-ink py-20 text-white md:py-28">
+            <div className="mx-auto max-w-4xl px-5 text-center md:px-8">
+              <p className="text-sm font-bold tracking-[0.18em] text-blue-200">
+                FINAL CTA
+              </p>
+              <h2 className="mt-4 text-3xl font-black tracking-tight md:text-5xl">
+                오늘 하루를 그냥 흘려보내지 마세요.
+              </h2>
+              <p className="mx-auto mt-7 max-w-2xl whitespace-pre-line text-lg leading-9 text-gray-300">
+                하루를 기록하면 데이터가 됩니다.
+                {"\n"}데이터는 패턴을 보여줍니다.
+                {"\n"}패턴은 인사이트가 됩니다.
+                {"\n\n"}ㅋㅋㅍㅍ 하루복기 시스템으로
+                {"\n"}오늘의 기록을 내일의 실행계획으로 바꿔보세요.
+              </p>
+
+              <div className="mt-10 flex flex-col justify-center gap-3 sm:flex-row">
+                <a
+                  href="#"
+                  className="inline-flex items-center justify-center rounded-full bg-white px-6 py-3 text-sm font-bold text-ink transition hover:bg-gray-100"
+                >
+                  하루복기 시스템 구매하기
+                </a>
+                <a
+                  href="#"
+                  className="inline-flex items-center justify-center rounded-full border border-white/20 px-6 py-3 text-sm font-bold text-white transition hover:bg-white/10"
+                >
+                  문의하기
+                </a>
+              </div>
+            </div>
+          </section>
+        );
+      }
+
+      function Contact() {
+        return (
+          <section id="contact" className="bg-soft py-20 md:py-28">
+            <div className="mx-auto max-w-7xl px-5 md:px-8">
+              <div className="grid gap-8 md:grid-cols-[0.9fr_1.1fr] md:items-center">
+                <SectionTitle
+                  eyebrow="CONTACT"
+                  title="문의하기"
+                  description={`ㅋㅋㅍㅍ 하루복기 시스템, 강의, 워크숍, 협업 문의가 있으시면 아래 링크로 남겨주세요.`}
+                />
+
+                <Card className="p-8">
+                  <p className="mb-5 text-sm font-bold text-muted">문의 유형</p>
+                  <div className="grid gap-3 sm:grid-cols-2">
+                    {contactTypes.map((item) => (
+                      <div
+                        key={item}
+                        className="rounded-2xl border border-line bg-white px-4 py-3 text-sm font-semibold"
+                      >
+                        {item}
+                      </div>
+                    ))}
+                  </div>
+
+                  <div className="mt-8">
+                    <PrimaryButton>문의 남기기</PrimaryButton>
+                  </div>
+                </Card>
+              </div>
+            </div>
+          </section>
+        );
+      }
+
+      function Footer() {
+        return (
+          <footer className="border-t border-line bg-white">
+            <div className="mx-auto max-w-7xl px-5 py-12 md:px-8">
+              <div className="grid gap-10 md:grid-cols-[1.2fr_0.8fr]">
+                <div>
+                  <h2 className="text-2xl font-black">ㅋㅋㅍㅍ</h2>
+                  <p className="mt-4 text-lg font-bold">
+                    데이터 심은 데 인사이트 난다.
+                  </p>
+                  <p className="mt-4 whitespace-pre-line leading-8 text-muted">
+                    시간, 습관, 돈, 일의 데이터를 기록하고
+                    {"\n"}삶과 비즈니스의 인사이트로 바꿉니다.
+                  </p>
+                  <div className="mt-6 space-y-1 text-sm text-muted">
+                    <p>사업자명: 콩콩팥팥</p>
+                    <p>대표: 김대현</p>
+                  </div>
+                </div>
+
+                <div className="md:text-right">
+                  <p className="mb-4 text-sm font-bold text-muted">메뉴</p>
+                  <div className="flex flex-wrap gap-4 md:justify-end">
+                    {navItems.map((item) => (
+                      <a
+                        key={item.label}
+                        href={item.href}
+                        className="text-sm font-semibold text-muted transition hover:text-ink"
+                      >
+                        {item.label}
+                      </a>
+                    ))}
+                  </div>
+                </div>
+              </div>
+
+              <div className="mt-10 border-t border-line pt-6 text-sm text-muted">
+                Copyright © 2026 ㅋㅋㅍㅍ. All rights reserved.
+              </div>
+            </div>
+          </footer>
+        );
+      }
+
+      function App() {
+        return (
+          <>
+            <Header />
+            <main>
+              <Hero />
+              <Problem />
+              <Philosophy />
+              <Product />
+              <ProductComponents />
+              <HowItWorks />
+              <Target />
+              <BeforeAfter />
+              <Price />
+              <Content />
+              <FAQ />
+              <FinalCTA />
+              <Contact />
+            </main>
+            <Footer />
+          </>
+        );
+      }
+
+      ReactDOM.createRoot(document.getElementById("root")).render(<App />);
+    </script>
+  </body>
+</html>
